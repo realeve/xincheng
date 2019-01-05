@@ -16,27 +16,25 @@
         v-model="sport.cardNo"
         placeholder="点击此处输入身份证后6位"
       ></x-input>
-      <x-input
-        title="年级"
-        required
-        disabled
-        name="grade_name"
-      ></x-input>
-      <picker
-        :data='gradeList'
-        v-model='params.grade_id'
-      ></picker>
-
-      <x-input
+      <popup-picker
+        :data='cascadeList'
+        :fixed-columns="2"
+        :columns=2
+        v-model='cascadeValue'
+        @on-change='change'
+        show-name
         title="班级"
-        required
-        disabled
-        name="class_name"
-      ></x-input>
-      <picker
-        :data='classList'
-        v-model='params.class_name'
-      ></picker>
+      ></popup-picker>
+
+      <popup-picker
+        :data='clubList'
+        :fixed-columns="2"
+        :columns=2
+        v-model='clubValue'
+        @on-change='clubChange'
+        show-name
+        title="社团"
+      ></popup-picker>
 
       <div class="btn">
         <x-button
@@ -56,7 +54,7 @@ import {
   XInput,
   Group,
   Toast,
-  Picker,
+  PopupPicker,
   GroupTitle,
   dateFormat
 } from "vux";
@@ -72,7 +70,7 @@ export default {
     Group,
     Toast,
     GroupTitle,
-    Picker
+    PopupPicker
   },
   data() {
     return {
@@ -80,14 +78,11 @@ export default {
         show: false,
         msg: ""
       },
-      gradeList: [],
-      classList: [],
-      classIds: [],
-      params: {
-        class_id: 0,
-        class_name: [0],
-        grade_id: [0]
-      }
+      cascadeList: [],
+      cascadeValue: ["一年级", "1"],
+      gradeId: 1,
+      clubValue: ["", "1"],
+      clubList: []
     };
   },
   computed: {
@@ -109,60 +104,50 @@ export default {
       );
     }
   },
-  watch: {
-    "params.grade_id"([val]) {
-      let grade_id = R.findIndex(R.equals(val))(this.gradeList[0]);
-
-      let classList = R.compose(
-        R.map(item => ["一", "二", "三", "四", "五", "六"][item - 1] + "班"),
-        R.uniq,
-        R.map(R.prop("class_id")),
-        R.filter(R.propEq("grade_id", grade_id + 1))
-      )(this.classIds);
-      this.classList = [classList];
-      localStorage.setItem("grade_id", grade_id + 1);
-      //班级改变时
-      let class_name = R.findIndex(R.equals(this.params.class_name[0]))(
-        this.classList[0]
-      );
-      let curGrade = R.find(
-        item => item.class_id == class_name + 1 && item.grade_id == grade_id + 1
-      )(this.classIds);
-      this.params.class_id = curGrade.class_id;
-      localStorage.setItem("class_id", curGrade.id);
-    },
-    "params.class_name"([val]) {
-      let grade_id = R.findIndex(R.equals(this.params.grade_id[0]))(
-        this.gradeList[0]
-      );
-
-      let class_name = R.findIndex(R.equals(this.params.class_name[0]))(
-        this.classList[0]
-      );
-      let curGrade = R.find(
-        item => item.class_id == class_name + 1 && item.grade_id == grade_id + 1
-      )(this.classIds);
-      // if (typeof curGrade == "undefined") {
-      //   return;
-      // }
-      this.params.class_id = curGrade.class_id;
-      localStorage.setItem("class_id", curGrade.id);
-    }
-  },
   methods: {
+    clubChange(value) {
+      localStorage.setItem("club_id", value[1]);
+    },
+    change([gradeName, class_id]) {
+      localStorage.setItem("class_id", class_id);
+      this.gradeId = {
+        一年级: 1,
+        二年级: 2,
+        三年级: 3,
+        四年级: 4,
+        五年级: 5,
+        六年级: 6
+      }[gradeName];
+      localStorage.setItem("grade_id", this.gradeId);
+    },
     jump(router) {
       this.$router.push(router);
     },
     async init() {
-      let { data: classIds } = await db.getXinchengClasslist();
-      let gradeName = ["一", "二", "三", "四", "五", "六"].map(
-        item => item + "年级"
-      );
-
-      this.gradeList = [gradeName];
-      this.classIds = classIds;
-
+      let { data: cascadeList } = await db.getXinchengClasslistCascade();
+      this.cascadeList = cascadeList;
+      this.loadClassInfo();
       this.loadUserInfo();
+      this.loadClubData();
+    },
+    loadClassInfo() {
+      this.cascadeValue = this.loadLocalStorage("class_id", this.cascadeList);
+    },
+    loadClubInfo() {
+      this.clubValue = this.loadLocalStorage("club_id", this.clubList);
+    },
+    loadLocalStorage(key, storageList, storageValue) {
+      let class_id = localStorage.getItem(key);
+      if (R.isNil(class_id)) {
+        return;
+      }
+      let clsInfo = R.find(item => item.value == class_id)(storageList);
+      return [clsInfo.parent, clsInfo.value];
+    },
+    async loadClubData() {
+      let { data } = await db.getXinchengClublist();
+      this.clubList = data;
+      this.loadClubInfo();
     },
     loadUserInfo() {
       let userInfo = localStorage.getItem("userInfoVote");

@@ -7,15 +7,6 @@
     >
       <div class="section-item">
         <div class="weui-cells__title">{{i+1}}.{{question.course_name}}<span v-show="i>1">老师</span></div>
-        <picker
-          v-if="i==courseList.length-1"
-          :data='clubList'
-          :fixed-columns="2"
-          :columns=2
-          v-model='clubValue'
-          @on-change='change'
-          style="margin-bottom:20px;"
-        ></picker>
         <div class="rater-container">
           <rater
             :min="1"
@@ -89,10 +80,7 @@ export default {
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
       raterText: ["不满意", "基本满意", "满意"],
-      clubValue: [],
-      clubList: [],
-      courseList: [],
-      club_id: 0
+      courseList: []
     };
   },
   computed: {
@@ -126,9 +114,6 @@ export default {
     }
   },
   methods: {
-    change(value) {
-      this.club_id = value[1];
-    },
     getCompleteStatus() {
       let flag = true;
       // 是否全部选择
@@ -148,16 +133,14 @@ export default {
           }
         }
       }
-
       if (this.answerList.length === 0) {
         flag = false;
       }
-
       this.isCompleted = flag;
     },
     getSubmitData() {
       let class_id = localStorage.getItem("class_id"),
-        club_id = this.club_id;
+        club_id = localStorage.getItem("club_id");
 
       let voteInfo = this.answerList.map((score, idx) => {
         let { cid: course_id } = this.courseList[idx];
@@ -199,15 +182,10 @@ export default {
       if (this.sport.uid == 0) {
         this.$router.push("/login");
       }
-    },
-    async loadClubData() {
-      let { data } = await db.getXinchengClublist();
-      this.clubList = data;
     }
   },
   mounted() {
     this.prepareData();
-    this.loadClubData();
   }
 };
 </script>

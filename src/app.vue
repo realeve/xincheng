@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <!-- <v-console /> -->
-    <!-- <v-header/> -->
     <loading v-model="isLoading" />
     <router-view />
-    <!-- <v-foot/>  -->
   </div>
 </template>
 
@@ -38,14 +36,6 @@ export default {
       },
       set(val) {
         this.$store.commit("updateLoadingStatus", val);
-      }
-    },
-    userInfo: {
-      get() {
-        return this.$store.state.userInfo;
-      },
-      set(val) {
-        this.$store.commit("setUserinfo", val);
       }
     },
     // 签名用URL
@@ -104,21 +94,21 @@ export default {
     },
     initWxShare() {
       this.$wechat.ready(() => {
-        let option = {
-          title: this.title, // 分享标题
-          desc: this.title,
-          link: this.shareUrl,
-          imgUrl: "http://cbpm.sinaapp.com/cdn/logo/cbpc.jpg",
-          type: "",
-          dataUrl: "",
-          success: function() {},
-          cancel: function() {}
-        };
-        this.$wechat.onMenuShareAppMessage(option);
-        this.$wechat.onMenuShareTimeline(option);
-        this.$wechat.onMenuShareQQ(option);
-        this.$wechat.onMenuShareWeibo(option);
-        this.$wechat.onMenuShareQZone(option);
+        // let option = {
+        //   title: this.title, // 分享标题
+        //   desc: this.title,
+        //   link: this.shareUrl,
+        //   imgUrl: "http://cbpm.sinaapp.com/cdn/logo/cbpc.jpg",
+        //   type: "",
+        //   dataUrl: "",
+        //   success: function() {},
+        //   cancel: function() {}
+        // };
+        // this.$wechat.onMenuShareAppMessage(option);
+        // this.$wechat.onMenuShareTimeline(option);
+        // this.$wechat.onMenuShareQQ(option);
+        // this.$wechat.onMenuShareWeibo(option);
+        // this.$wechat.onMenuShareQZone(option);
 
         // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
         this.$wechat.hideMenuItems({
@@ -135,55 +125,13 @@ export default {
         });
       });
     },
-    // 获取微信用户信息（昵称，地区）
-    getWXUserInfo() {
-      let userInfo;
-      let wx_userinfo = localStorage["wx_userinfo"];
-      if (typeof wx_userinfo != "undefined") {
-        userInfo = JSON.parse(wx_userinfo);
-        this.userInfo = userInfo;
-        return;
-      }
-      this.getWXInfo();
-    },
-    getWXInfo() {
-      axios({
-        params: {
-          s: "/weixin/user_info",
-          code: this.code
-        }
-      }).then(data => {
-        this.userInfo = data;
-        if (Reflect.get(res.data, "nickname")) {
-          localStorage.setItem("wx_userinfo", JSON.stringify(res.data));
-        }
-      });
-    },
+
     wxInit() {
-      if (this.sport.loadWXInfo && !this.needRedirect()) {
-        this.getWXUserInfo();
-      }
       this.wxPermissionInit().then(data => {
         this.shouldShare = true;
         this.wxReady(data);
         this.initWxShare();
-        this.recordReadNum();
       });
-    },
-    needRedirect() {
-      let hrefArr = window.location.href.split("?");
-      if (hrefArr.length == 1) {
-        window.location.href = this.redirectUrl;
-        return true;
-      }
-      let params = querystring.parse(hrefArr[1]);
-      this.code = params.code;
-      return false;
-    },
-    recordReadNum() {
-      if (location.href.indexOf("localhost") > -1) {
-        return;
-      }
     }
   },
   created() {

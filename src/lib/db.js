@@ -66,3 +66,12 @@ export const setXinchengUserlist = (params) =>
     url: '/121/ff92a413a4.json',
     params
   });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 班级列表-多级选择 }
+ */
+export const getXinchengClasslistCascade = () =>
+  axios({
+    url: '/126/f697a432b5.json'
+  });
