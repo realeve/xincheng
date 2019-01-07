@@ -94,21 +94,21 @@ export default {
     },
     initWxShare() {
       this.$wechat.ready(() => {
-        // let option = {
-        //   title: this.title, // 分享标题
-        //   desc: this.title,
-        //   link: this.shareUrl,
-        //   imgUrl: "http://cbpm.sinaapp.com/cdn/logo/cbpc.jpg",
-        //   type: "",
-        //   dataUrl: "",
-        //   success: function() {},
-        //   cancel: function() {}
-        // };
-        // this.$wechat.onMenuShareAppMessage(option);
-        // this.$wechat.onMenuShareTimeline(option);
-        // this.$wechat.onMenuShareQQ(option);
-        // this.$wechat.onMenuShareWeibo(option);
-        // this.$wechat.onMenuShareQZone(option);
+        let option = {
+          title: this.title, // 分享标题
+          desc: this.title,
+          link: this.shareUrl,
+          imgUrl: "http://www.cbpc.ltd/public/topic/201901/static/logo.jpg",
+          type: "",
+          dataUrl: "",
+          success: function() {},
+          cancel: function() {}
+        };
+        this.$wechat.onMenuShareAppMessage(option);
+        this.$wechat.onMenuShareTimeline(option);
+        this.$wechat.onMenuShareQQ(option);
+        this.$wechat.onMenuShareWeibo(option);
+        this.$wechat.onMenuShareQZone(option);
 
         // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
         this.$wechat.hideMenuItems({
@@ -125,7 +125,6 @@ export default {
         });
       });
     },
-
     wxInit() {
       this.wxPermissionInit().then(data => {
         this.shouldShare = true;
@@ -136,6 +135,7 @@ export default {
   },
   created() {
     this.title = this.sport.name;
+    this.wxInit();
   }
 };
 </script>
