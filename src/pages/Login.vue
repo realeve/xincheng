@@ -24,6 +24,7 @@
         @on-change='change'
         show-name
         title="班级"
+        placeholder="请选择"
       ></popup-picker>
 
       <popup-picker
@@ -34,6 +35,7 @@
         @on-change='clubChange'
         show-name
         title="社团"
+        placeholder="请选择"
       ></popup-picker>
 
       <div class="btn">
