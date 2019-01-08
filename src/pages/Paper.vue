@@ -6,22 +6,35 @@
       :key="i"
     >
       <div class="section-item">
-        <div class="weui-cells__title">{{i+1}}.{{question.course_name}}<span v-show="i>1">老师</span></div>
-        <div class="rater-container">
-          <rater
-            :min="1"
-            :max="3"
-            v-model="answerList[i]"
-          />
-          <label class="text">{{raterText[answerList[i]-1]}}</label>
+        <div class="weui-cells__title">
+          {{i+1}}.{{question.course_name}}
+          <span v-show="i>1">老师</span>
         </div>
-        <div v-show="answerList[i]==1">
+        <group>
+          <radio
+            title="title"
+            :selected-label-style="{color: '#09BB07'}"
+            :options="options"
+            v-model="answerList[i]"
+          ></radio>
+        </group>
+        <div v-show="answerList[i]=='不满意'">
           <x-textarea
             v-model="remarkList[i]"
             placeholder=" 我们希望了解不满意的原因(必填项，至少10个字)。"
           ></x-textarea>
           <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
         </div>
+        <!--
+        <div class="rater-container">
+          <rater :min="1" :max="3" v-model="answerList[i]"/>
+          <label class="text">{{raterText[answerList[i]-1]}}</label>
+        </div>
+        <div v-show="answerList[i]==1">
+          <x-textarea v-model="remarkList[i]" placeholder=" 我们希望了解不满意的原因(必填项，至少10个字)。"></x-textarea>
+          <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
+        </div>
+        -->
       </div>
     </div>
 
@@ -41,8 +54,8 @@ import {
   Group,
   Checklist,
   XButton,
-  Rater,
-  Picker
+  Picker,
+  Radio
 } from "vux";
 
 import { dateFormat } from "vux";
@@ -65,9 +78,9 @@ export default {
     Checklist,
     XButton,
     Tips,
-    Rater,
     XTextarea,
-    Picker
+    Picker,
+    Radio
   },
   data() {
     return {
@@ -79,8 +92,8 @@ export default {
       answerList: [],
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
-      raterText: ["不满意", "基本满意", "满意"],
-      courseList: []
+      courseList: [],
+      options: ["满意", "基本满意", "不满意"]
     };
   },
   computed: {
@@ -117,14 +130,14 @@ export default {
     getCompleteStatus() {
       let flag = true;
       // 是否全部选择
-      for (let i = 0; flag && i < this.answerList.length; i++) {
+      if (this.answerList.length === 0) {
+        return false;
+      }
+      for (let i = 0; flag && i < this.courseList.length; i++) {
         let item = this.answerList[i];
         if (typeof item == "undefined") {
           flag = false;
-        }
-
-        // 很不满意
-        if (item == 1) {
+        } else if (item == "不满意") {
           if (
             typeof this.remarkList[i] == "undefined" ||
             this.remarkList[i].trim().length < 10
@@ -133,18 +146,20 @@ export default {
           }
         }
       }
-      if (this.answerList.length === 0) {
-        flag = false;
-      }
       this.isCompleted = flag;
     },
     getSubmitData() {
       let class_id = localStorage.getItem("class_id"),
         club_id = localStorage.getItem("club_id");
 
-      let voteInfo = this.answerList.map((score, idx) => {
+      let voteInfo = this.answerList.map((scoreText, idx) => {
         let { cid: course_id } = this.courseList[idx];
         let isNotLastQuestion = idx < this.answerList.length - 1;
+        let score = {
+          不满意: 1,
+          基本满意: 2,
+          满意: 3
+        }[scoreText];
         return {
           uid: this.sport.uid,
           course_id,
@@ -165,7 +180,6 @@ export default {
     },
     async submit() {
       let { voteInfo, userInfo } = this.getSubmitData();
-
       let { data } = await db.addXinchengVotelist(voteInfo);
       db.setXinchengUserlist(userInfo);
       if (data[0].affected_rows > 0) {
@@ -178,6 +192,8 @@ export default {
       let grade_id = localStorage.getItem("grade_id");
       let { data } = await db.getXinchengTeacherlist(grade_id);
       this.courseList = data;
+
+      // this.answerList = data.map(item => "基本满意");
 
       if (this.sport.uid == 0) {
         this.$router.push("/login");

@@ -12,7 +12,7 @@ import { Loading } from "vux";
 import { querystring } from "vux";
 
 import { mapState } from "vuex";
-import * as db from "./lib/db";
+import { axios } from "./lib/axios";
 // import VConsole from "./components/VConsole";
 export default {
   name: "app",
@@ -64,7 +64,7 @@ export default {
       if (!val) {
         return;
       }
-      this.title = `龙小新城2018-2019学年度上期教师满意度家长测评问卷...`;
+      this.title = `龙小新城2018-2019学年度上期教师满意度家长测评问卷`;
       this.initWxShare();
     }
   },
@@ -95,8 +95,8 @@ export default {
     initWxShare() {
       this.$wechat.ready(() => {
         let option = {
-          title: this.title, // 分享标题
-          desc: this.title,
+          title: "教师满意度家长测评问卷", // 分享标题
+          desc: "龙小新城2018-2019学年度上期教师满意度家长测评问卷",
           link: this.shareUrl,
           imgUrl: "http://www.cbpc.ltd/public/topic/201901/static/logo.jpg",
           type: "",
