@@ -154,7 +154,7 @@ export default {
 
       let voteInfo = this.answerList.map((scoreText, idx) => {
         let { cid: course_id } = this.courseList[idx];
-        let isNotLastQuestion = idx < this.answerList.length - 1;
+        let isNotClubQuestion = course_id != 16;
         let score = {
           不满意: 1,
           基本满意: 2,
@@ -163,7 +163,7 @@ export default {
         return {
           uid: this.sport.uid,
           course_id,
-          club_id: isNotLastQuestion ? -1 : club_id,
+          club_id: isNotClubQuestion ? -1 : club_id,
           score,
           remark: this.remarkList[idx] || ""
         };

@@ -17,22 +17,22 @@
         placeholder="点击此处输入身份证后6位"
       ></x-input>
       <popup-picker
-        :data='cascadeList'
+        :data="cascadeList"
         :fixed-columns="2"
-        :columns=2
-        v-model='cascadeValue'
-        @on-change='change'
+        :columns="2"
+        v-model="cascadeValue"
+        @on-change="change"
         show-name
         title="班级"
         placeholder="请选择"
       ></popup-picker>
 
       <popup-picker
-        :data='clubList'
+        :data="clubList"
         :fixed-columns="2"
-        :columns=2
-        v-model='clubValue'
-        @on-change='clubChange'
+        :columns="2"
+        v-model="clubValue"
+        @on-change="clubChange"
         show-name
         title="社团"
         placeholder="请选择"
@@ -178,7 +178,7 @@ export default {
 
       let [{ uid, is_vote }] = data;
 
-      if (is_vote > -1) {
+      if (is_vote > -1 && this.sport.userName != "test") {
         this.toast.show = true;
         this.toast.msg = "已提交";
         this.jump("info");
