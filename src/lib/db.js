@@ -75,3 +75,14 @@ export const getXinchengClasslistCascade = () =>
   axios({
     url: '/126/f697a432b5.json'
   });
+
+  /**
+ *   @database: { 微信开发 }
+ *   @desc:     { 年级课程列表_无社团课 } 
+ */
+export const getXinchengTeacherlistNoGroup = grade_name => axios({
+  url: '/131/9f5ea1ef9d.json',
+  params: {
+    grade_name
+  },
+});

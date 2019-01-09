@@ -190,7 +190,11 @@ export default {
     },
     async prepareData() {
       let grade_id = localStorage.getItem("grade_id");
-      let { data } = await db.getXinchengTeacherlist(grade_id);
+      let method =
+        localStorage.getItem("club_id") == 1
+          ? "getXinchengTeacherlistNoGroup"
+          : "getXinchengTeacherlist";
+      let { data } = await db[method](grade_id);
       this.courseList = data;
 
       // this.answerList = data.map(item => "基本满意");
