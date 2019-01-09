@@ -45,6 +45,10 @@
           @click.native="submit"
         >{{isEnd ? "活动已结束" : "登录"}}</x-button>
       </div>
+      <div class="note">
+        <p class="title">温馨提示：</p>
+        <p style="padding-top:15px;">每份问卷只能提交一次，且提交后不能修改，故请准确选择班级及社团名称，认真填写满意度，以免造成评价结果有失公正。</p>
+      </div>
     </group>
     <toast v-model="toast.show">{{ toast.msg }}</toast>
     <v-foot />
@@ -102,7 +106,7 @@ export default {
     },
     isEnd() {
       return (
-        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-10 23:59:59"
+        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-11 16:00:00"
       );
     }
   },
@@ -230,5 +234,17 @@ export default {
 .btn {
   width: 80%;
   margin: 60px auto;
+}
+
+.note {
+  margin: 10px 20px;
+  .title {
+    color: #e23;
+    font-size: unset;
+    font-weight: bold;
+  }
+  p {
+    text-align: justify;
+  }
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="margin-top-20 slogan">龙小新城2018-2019学年度上期</div>
       <p class="title margin-top-10">教师满意度家长测评问卷</p>
       <div class="welcome margin-top-20">
-        <p>尊敬的家长朋友们：</p>
+        <p style="text-indent:0;">尊敬的家长朋友们：</p>
 
         <p>你们好！孩子的成长离不开您的关注，教师的工作离不开您的协作，学校的发展离不开您的支持，您的关心和支持是我们不断向前的动力。</p>
 
@@ -12,7 +12,7 @@
 
         <p>感谢您的配合与支持，让我们携手同行，家校相互的理解和协作是孩子健康成长的基础！</p>
 
-        <p></p>
+        <p>活动起止时间：2019年1月9日16:00-1月11日16:00</p>
         <p class="text-right">2019年1月</p>
       </div>
       <div class="btn-wrapper margin-top-20">
@@ -64,7 +64,7 @@ export default {
     },
     isEnd() {
       return (
-        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-10 23:59:59"
+        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-11 16:00:00"
       );
     }
     // showBtn() {
