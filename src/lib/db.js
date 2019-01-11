@@ -105,7 +105,7 @@ export const getXinchengUserlistTeacher = (params) =>
  */
 export const getXinchengTeachers = () =>
   axios({
-    url: '/139/046207a028.json'
+    url: '/139/046207a028/300.json'
   });
 /**
 *   @database: { 微信开发 }

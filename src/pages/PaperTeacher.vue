@@ -17,13 +17,13 @@
             v-model="answerList[i]"
           ></radio>
         </group>
-        <div v-show="answerList[i]=='不满意'">
+        <!-- <div v-show="answerList[i]=='不满意'">
           <x-textarea
             v-model="remarkList[i]"
             placeholder=" 我们希望了解不满意的原因(必填项，至少10个字)。"
           ></x-textarea>
           <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -77,7 +77,7 @@ export default {
         show: false,
         msg: ""
       },
-      remarkList: [],
+      // remarkList: [],
       answerList: [],
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
@@ -110,10 +110,10 @@ export default {
   watch: {
     answerList(val) {
       this.getCompleteStatus();
-    },
-    remarkList(val) {
-      this.getCompleteStatus();
     }
+    // remarkList(val) {
+    //   this.getCompleteStatus();
+    // }
   },
   methods: {
     getCompleteStatus() {
@@ -126,14 +126,15 @@ export default {
         let item = this.answerList[i];
         if (typeof item == "undefined") {
           flag = false;
-        } else if (item == "不满意") {
-          if (
-            typeof this.remarkList[i] == "undefined" ||
-            this.remarkList[i].trim().length < 10
-          ) {
-            flag = false;
-          }
         }
+        //  else if (item == "不满意") {
+        //   if (
+        //     typeof this.remarkList[i] == "undefined" ||
+        //     this.remarkList[i].trim().length < 10
+        //   ) {
+        //     flag = false;
+        //   }
+        // }
       }
       this.isCompleted = flag;
     },
@@ -151,8 +152,7 @@ export default {
         return {
           uid: this.sport.uid,
           course_id,
-          score,
-          remark: this.remarkList[idx] || ""
+          score
         };
       });
 
