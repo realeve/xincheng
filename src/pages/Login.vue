@@ -17,6 +17,7 @@
         placeholder="点击此处输入身份证后6位"
       ></x-input>
       <popup-picker
+        v-if="!is_teacher"
         :data="cascadeList"
         :fixed-columns="2"
         :columns="2"
@@ -28,6 +29,7 @@
       ></popup-picker>
 
       <popup-picker
+        v-if="!is_teacher"
         :data="clubList"
         :fixed-columns="2"
         :columns="2"
@@ -47,7 +49,7 @@
       </div>
       <div class="note">
         <p class="title">温馨提示：</p>
-        <p style="padding-top:15px;">每份问卷只能提交一次，且提交后不能修改，故请准确选择班级及社团名称，认真填写满意度，以免造成评价结果有失公正。</p>
+        <p style="padding-top:15px;">每份问卷只能提交一次，且提交后不能修改，故请{{is_teacher?'':'准确选择班级及社团名称，'}}认真填写满意度，以免造成评价结果有失公正。</p>
       </div>
     </group>
     <toast v-model="toast.show">{{ toast.msg }}</toast>
@@ -106,8 +108,12 @@ export default {
     },
     isEnd() {
       return (
-        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-11 16:00:00"
+        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
+        (this.is_teacher ? "2019-01-14 09:00:00" : "2019-01-11 16:00:00")
       );
+    },
+    is_teacher() {
+      return this.$store.state.is_teacher;
     }
   },
   methods: {
@@ -168,7 +174,10 @@ export default {
       };
     },
     submit: async function() {
-      let { data, rows } = await db.getXinchengUserlist({
+      let method = this.is_teacher
+        ? "getXinchengUserlistTeacher"
+        : "getXinchengUserlist";
+      let { data, rows } = await db[method]({
         username: this.sport.userName,
         id_card: this.sport.cardNo.toUpperCase()
       });
@@ -203,7 +212,7 @@ export default {
       this.sport.uid = uid;
 
       localStorage.setItem("userInfoVote", userInfo);
-      this.jump("paper");
+      this.jump(this.is_teacher ? "teacher" : "paper");
     }
   },
   mounted() {

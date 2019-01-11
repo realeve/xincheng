@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="content">
-      <p class="title margin-top-20">龙小新城2018-2019学年度上期教师满意度家长测评问卷</p>
+      <p class="title margin-top-20">龙小新城2018-2019学年度上期教师满意度测评问卷</p>
       <p class="margin-top-20 tips">截止至 {{now}} ,本次活动共有{{this.papers.length}}人参与测评，统计结果如下：</p>
       <div
         class="card"
@@ -180,7 +180,7 @@ export default {
     }
   },
   mounted() {
-    document.title = "龙小新城2018-2019学年度上期教师满意度家长测评问卷";
+    document.title = "龙小新城2018-2019学年度上期教师满意度测评问卷";
     this.loadPapers();
   }
 };

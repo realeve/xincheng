@@ -2,13 +2,12 @@
   <div class="container">
     <div
       class="section"
-      v-for="(question,i) of courseList"
+      v-for="({uid,username},i) of teacherList"
       :key="i"
     >
       <div class="section-item">
         <div class="weui-cells__title">
-          {{i+1}}.{{question.course_name}}
-          <span v-show="i>1">老师</span>
+          {{i+1}}.{{username}}
         </div>
         <group>
           <radio
@@ -25,16 +24,6 @@
           ></x-textarea>
           <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
         </div>
-        <!--
-        <div class="rater-container">
-          <rater :min="1" :max="3" v-model="answerList[i]"/>
-          <label class="text">{{raterText[answerList[i]-1]}}</label>
-        </div>
-        <div v-show="answerList[i]==1">
-          <x-textarea v-model="remarkList[i]" placeholder=" 我们希望了解不满意的原因(必填项，至少10个字)。"></x-textarea>
-          <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
-        </div>
-        -->
       </div>
     </div>
 
@@ -92,8 +81,8 @@ export default {
       answerList: [],
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
-      courseList: [],
-      options: ["满意", "基本满意", "不满意"]
+      teacherList: [],
+      options: ["非常满意", "比较满意", "基本满意", "不满意"].reverse()
     };
   },
   computed: {
@@ -133,7 +122,7 @@ export default {
       if (this.answerList.length === 0) {
         return false;
       }
-      for (let i = 0; flag && i < this.courseList.length; i++) {
+      for (let i = 0; flag && i < this.teacherList.length; i++) {
         let item = this.answerList[i];
         if (typeof item == "undefined") {
           flag = false;
@@ -149,38 +138,38 @@ export default {
       this.isCompleted = flag;
     },
     getSubmitData() {
-      let class_id = localStorage.getItem("class_id"),
-        club_id = localStorage.getItem("club_id");
-
       let voteInfo = this.answerList.map((scoreText, idx) => {
-        let { cid: course_id } = this.courseList[idx];
-        let isNotClubQuestion = course_id != 16;
+        let { uid: course_id } = this.teacherList[idx];
+
         let score = {
           不满意: 1,
           基本满意: 2,
-          满意: 3
+          比较满意: 3,
+          非常满意: 4
         }[scoreText];
+
         return {
           uid: this.sport.uid,
           course_id,
-          club_id: isNotClubQuestion ? -1 : club_id,
           score,
           remark: this.remarkList[idx] || ""
         };
       });
+
       return {
         voteInfo,
         userInfo: {
           start_time: this.startTime,
           rec_time: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
           uid: this.sport.uid,
-          class_id
+          class_id: 1
         }
       };
     },
     async submit() {
       let { voteInfo, userInfo } = this.getSubmitData();
-      let { data } = await db.addXinchengVotelist(voteInfo);
+
+      let { data } = await db.addXinchengTeacherVotelist(voteInfo);
       db.setXinchengUserlist(userInfo);
       if (data[0].affected_rows > 0) {
         this.toast.show = true;
@@ -189,13 +178,10 @@ export default {
       }
     },
     async prepareData() {
-      let grade_id = localStorage.getItem("grade_id");
-      let method =
-        localStorage.getItem("club_id") == 1
-          ? "getXinchengTeacherlistNoGroup"
-          : "getXinchengTeacherlist";
-      let { data } = await db[method](grade_id);
-      this.courseList = data;
+      let { data } = await db.getXinchengTeachers();
+      this.teacherList = data;
+
+      // this.answerList = data.map(item => "比较满意");
 
       if (this.sport.uid == 0) {
         this.$router.push("/login");

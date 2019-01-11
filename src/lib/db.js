@@ -76,13 +76,48 @@ export const getXinchengClasslistCascade = () =>
     url: '/126/f697a432b5.json'
   });
 
-  /**
+/**
  *   @database: { 微信开发 }
- *   @desc:     { 年级课程列表_无社团课 } 
+ *   @desc:     { 年级课程列表_无社团课 }
  */
-export const getXinchengTeacherlistNoGroup = grade_name => axios({
-  url: '/131/9f5ea1ef9d.json',
-  params: {
-    grade_name
-  },
-});
+export const getXinchengTeacherlistNoGroup = (grade_name) =>
+  axios({
+    url: '/131/9f5ea1ef9d.json',
+    params: {
+      grade_name
+    }
+  });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 教师登录 } 
+    const { username, id_card } = params;
+*/
+export const getXinchengUserlistTeacher = (params) =>
+  axios({
+    url: '/133/f968523a63.json',
+    params
+  });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 教师列表 }
+ */
+export const getXinchengTeachers = () =>
+  axios({
+    url: '/139/046207a028.json'
+  });
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 批量教师投票 } 
+	以下参数在建立过程中与系统保留字段冲突，已自动替换:
+	@desc:批量插入数据时，约定使用二维数组values参数，格式为[{uid,course_id,score,remark }]，数组的每一项表示一条数据*/
+export const addXinchengTeacherVotelist = (values) =>
+  axios({
+    method: 'post',
+    data: {
+      values,
+      id: 140,
+      nonce: '8121cdcbb2'
+    }
+  });

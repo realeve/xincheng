@@ -2,17 +2,26 @@
   <div class="wrapper">
     <div class="content">
       <div class="margin-top-20 slogan">龙小新城2018-2019学年度上期</div>
-      <p class="title margin-top-10">教师满意度家长测评问卷</p>
+      <p class="title margin-top-10">教师满意度{{is_teacher?'教师':'家长'}}测评问卷</p>
       <div class="welcome margin-top-20">
-        <p style="text-indent:0;">尊敬的家长朋友们：</p>
+        <div v-if="!is_teacher">
+          <p style="text-indent:0;">尊敬的家长朋友们：</p>
 
-        <p>你们好！孩子的成长离不开您的关注，教师的工作离不开您的协作，学校的发展离不开您的支持，您的关心和支持是我们不断向前的动力。</p>
+          <p>你们好！孩子的成长离不开您的关注，教师的工作离不开您的协作，学校的发展离不开您的支持，您的关心和支持是我们不断向前的动力。</p>
 
-        <p>我们真诚希望您以客观、公正、实事求是的态度，对本学期执教您孩子的所有老师们给予评价。</p>
+          <p>我们真诚希望您以客观、公正、实事求是的态度，对本学期执教您孩子的所有老师们给予评价。</p>
 
-        <p>感谢您的配合与支持，让我们携手同行，家校相互的理解和协作是孩子健康成长的基础！</p>
+          <p>感谢您的配合与支持，让我们携手同行，家校相互的理解和协作是孩子健康成长的基础！</p>
 
-        <p>活动起止时间：2019年1月9日16:00-1月11日16:00</p>
+          <p>活动起止时间：2019年1月9日16:00-1月11日16:00</p>
+        </div>
+        <div v-else>
+          <p>尊敬的老师们：</p>
+          <p>岁月不居，时节如流。一年之中有四分之三的时光我们与同事共同携手走过。这一学期，同事们工作表现如何？我们真诚希望您以客观、公正、实事求是的态度，对本学期所有的同事们给予满意度评价。</p>
+          <p>评价是一种激励，它激励我们不断向上、向好，感谢您对学校工作的理解与支持！</p>
+          <p>活动起止时间：2019年1月12日9:00-1月14日9:00.</p>
+        </div>
+
         <p class="text-right">2019年1月</p>
       </div>
       <div class="btn-wrapper margin-top-20">
@@ -64,20 +73,13 @@ export default {
     },
     isEnd() {
       return (
-        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") > "2019-01-11 16:00:00"
+        dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
+        (this.is_teacher ? "2019-01-14 09:00:00" : "2019-01-11 16:00:00")
       );
+    },
+    is_teacher() {
+      return this.$store.state.is_teacher;
     }
-    // showBtn() {
-    //   let username = this.sport.userName;
-    //   let flag = false;
-    //   let userList = ["李宾", "何苗", "尹放", "时延风", "唐晓琴"];
-    //   userList.forEach(item => {
-    //     if (item == username) {
-    //       flag = true;
-    //     }
-    //   });
-    //   return flag;
-    // }
   },
   methods: {
     jump(router) {
