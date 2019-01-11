@@ -82,7 +82,7 @@ export default {
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
       teacherList: [],
-      options: ["非常满意", "比较满意", "基本满意", "不满意"].reverse()
+      options: ["非常满意", "比较满意", "基本满意", "不满意"]
     };
   },
   computed: {
