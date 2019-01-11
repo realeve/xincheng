@@ -109,7 +109,7 @@ export default {
     isEnd() {
       return (
         dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
-        (this.is_teacher ? "2019-01-14 09:00:00" : "2019-01-11 16:00:00")
+        (this.is_teacher ? "2019-01-14 17:00:00" : "2019-01-11 16:00:00")
       );
     },
     is_teacher() {
