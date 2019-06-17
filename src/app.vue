@@ -136,9 +136,9 @@ export default {
   created() {
     this.title = this.sport.name;
     this.wxInit();
-    if (window.location.href.indexOf("20190112")) {
-      this.$store.commit("setTeacherMode", 1);
-    }
+    // if (window.location.href.indexOf("20190112")) {
+    //   this.$store.commit("setTeacherMode", 1);
+    // }
   }
 };
 </script>
