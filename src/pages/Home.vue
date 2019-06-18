@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="content">
-      <div class="margin-top-20 slogan">龙小新城2018-2019学年度上期</div>
+      <div class="margin-top-20 slogan">龙小新城2018-2019学年度下期</div>
       <p class="title margin-top-10">教师满意度{{is_teacher?'教师':'家长'}}测评问卷</p>
       <div class="welcome margin-top-20">
         <div v-if="!is_teacher">
@@ -13,16 +13,16 @@
 
           <p>感谢您的配合与支持，让我们携手同行，家校相互的理解和协作是孩子健康成长的基础！</p>
 
-          <p>活动起止时间：2019年1月9日16:00-12月11日16:00</p>
+          <p>活动起止时间：2019年6月18日12:00-19日24:00</p>
         </div>
         <div v-else>
           <p>尊敬的老师们：</p>
           <p>岁月不居，时节如流。一年之中有四分之三的时光我们与同事共同携手走过。这一学期，同事们工作表现如何？我们真诚希望您以客观、公正、实事求是的态度，对本学期所有的同事们给予满意度评价。</p>
           <p>评价是一种激励，它激励我们不断向上、向好，感谢您对学校工作的理解与支持！</p>
-          <p>活动起止时间：2019年1月12日9:00-1月14日17:00.</p>
+          <p>活动起止时间：2019年6月18日9:00-19日24:00.</p>
         </div>
 
-        <p class="text-right">2019年1月</p>
+        <p class="text-right">2019年6月</p>
       </div>
       <div class="btn-wrapper margin-top-20">
         <x-button
@@ -74,7 +74,7 @@ export default {
     isEnd() {
       return (
         dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
-        (this.is_teacher ? "2019-12-11 17:00:00" : "2019-12-11 16:00:00")
+        (this.is_teacher ? "2019-6-19 23:59:00" : "2019-6-19 23:59:00")
       );
     },
     is_teacher() {
@@ -87,7 +87,7 @@ export default {
     }
   },
   mounted() {
-    document.title = "龙小新城2018-2019学年度上期教师满意度家长测评问卷";
+    document.title = "龙小新城2018-2019学年度下期教师满意度教师测评问卷";
   }
 };
 </script>

@@ -64,7 +64,7 @@ export default {
       if (!val) {
         return;
       }
-      this.title = `龙小新城2018-2019学年度上期教师满意度测评问卷`;
+      this.title = `龙小新城2018-2019学年度下期教师满意度测评问卷`;
       this.initWxShare();
     }
   },
@@ -96,7 +96,7 @@ export default {
       this.$wechat.ready(() => {
         let option = {
           title: "教师满意度测评问卷", // 分享标题
-          desc: "龙小新城2018-2019学年度上期教师满意度测评问卷",
+          desc: "龙小新城2018-2019学年度下期教师满意度测评问卷",
           link: this.shareUrl,
           imgUrl: "http://www.cbpc.ltd/public/topic/201901/static/logo.jpg",
           type: "",
