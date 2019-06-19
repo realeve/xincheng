@@ -109,7 +109,7 @@ export default {
     isEnd() {
       return (
         dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
-        (this.is_teacher ? "2019-6-19 23:59:00" : "2019-6-19 23:59:00")
+        (this.is_teacher ? "2019-6-21 23:59:00" : "2019-6-21 23:59:00")
       );
     },
     is_teacher() {
@@ -189,7 +189,9 @@ export default {
         return;
       }
 
-      let [{ uid, is_vote }] = data;
+      let [{ uid, is_vote, grade_id }] = data;
+      this.grade_id = grade_id;
+      localStorage.setItem("grade_id", grade_id);
 
       if (is_vote > -1 && this.sport.userName != "test") {
         this.toast.show = true;
