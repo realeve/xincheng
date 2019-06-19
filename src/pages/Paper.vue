@@ -181,7 +181,10 @@ export default {
     async submit() {
       let { voteInfo, userInfo } = this.getSubmitData();
       let { data } = await db.addXinchengVotelist(voteInfo);
+
+      // 更新用户班级信息
       db.setXinchengUserlist(userInfo);
+
       if (data[0].affected_rows > 0) {
         this.toast.show = true;
         this.toast.msg = "提交成功";

@@ -16,7 +16,7 @@
         v-model="sport.cardNo"
         placeholder="点击此处输入身份证后6位"
       ></x-input>
-      <popup-picker
+      <!-- <popup-picker
         v-if="!is_teacher"
         :data="cascadeList"
         :fixed-columns="2"
@@ -26,7 +26,7 @@
         show-name
         title="班级"
         placeholder="请选择"
-      ></popup-picker>
+      ></popup-picker> -->
 
       <popup-picker
         v-if="!is_teacher"
