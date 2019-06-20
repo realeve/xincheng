@@ -49,7 +49,7 @@
       </div>
       <div class="note">
         <p class="title">温馨提示：</p>
-        <p style="padding-top:15px;">每份问卷只能提交一次，且提交后不能修改，故请{{is_teacher?'':'准确选择班级及社团名称，'}}认真填写满意度，以免造成评价结果有失公正。</p>
+        <p style="padding-top:15px;">每份问卷只能提交一次，且提交后不能修改，故请{{is_teacher?'':'准确选择社团名称，'}}认真填写满意度，以免造成评价结果有失公正。</p>
       </div>
     </group>
     <toast v-model="toast.show">{{ toast.msg }}</toast>
