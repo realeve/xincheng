@@ -18,27 +18,26 @@ let isMobile = () => {
 const state = {
   isLoading: false,
   userInfo: {},
-  cdnUrl: 'http://cbpc540.applinzi.com/index.php',
-  tips: '',
+  tips: "",
   sport: {
     id: 1,
-    name: '',
-    orgname: '', // 机构名
-    timeRange: '', // 活动时间
+    name: "",
+    orgname: "", // 机构名
+    timeRange: "", // 活动时间
     loadWXInfo: true, // 抽奖活动将载入用户个人信息
     uid: 0,
-    userName: '',
-    cardNo: '',
+    userName: "",
+    cardNo: "",
     isLogin: false,
     maxTimes: 1,
     curTimes: 0,
-    testMode: false
+    testMode: false,
   },
   is_teacher: 0,
   paperInit: false,
   peopleCount: 0,
   isPC: !isMobile(),
-  refreshInterval: 5 * 1000
+  refreshInterval: 5 * 1000,
 };
 
 export default state;

@@ -1,29 +1,27 @@
 <template>
   <div class="container">
-    <div
-      class="section"
-      v-for="(question,i) of courseList"
-      :key="i"
-    >
+    <div class="section" v-for="(question, i) of courseList" :key="i">
       <div class="section-item">
         <div class="weui-cells__title">
-          {{i+1}}.{{question.course_name}}
-          <span v-show="i>1">老师</span>
+          {{ i + 1 }}.{{ question.course_name }}
+          <span v-show="i > 1">老师</span>
         </div>
         <group>
           <radio
             title="title"
-            :selected-label-style="{color: '#09BB07'}"
+            :selected-label-style="{ color: '#09BB07' }"
             :options="options"
             v-model="answerList[i]"
           ></radio>
         </group>
-        <div v-show="answerList[i]=='不满意'">
+        <div v-show="answerList[i] == '不满意'">
           <x-textarea
             v-model="remarkList[i]"
             placeholder=" 我们希望了解不满意的原因(必填项，至少10个字)。"
           ></x-textarea>
-          <p style="padding-left:10px;">({{remarkList[i]?remarkList[i].trim().length:0}}/10)</p>
+          <p style="padding-left: 10px;">
+            ({{ remarkList[i] ? remarkList[i].trim().length : 0 }}/10)
+          </p>
         </div>
         <!--
         <div class="rater-container">
@@ -43,7 +41,8 @@
       type="primary"
       @click.native="submit()"
       class="submit"
-    >提交</x-button>
+      >提交</x-button
+    >
     <toast v-model="toast.show">{{ toast.msg }}</toast>
   </div>
 </template>
@@ -55,20 +54,16 @@ import {
   Checklist,
   XButton,
   Picker,
-  Radio
+  Radio,
 } from "vux";
 
 import { dateFormat } from "vux";
 
 import { mapState } from "vuex";
 
-import questionJSON from "../assets/data/harmoney";
-
 import Tips from "../components/Tips.vue";
-import util from "../lib/common";
 import * as db from "../lib/db";
 const R = require("ramda");
-let questionList = util.getHarmoney(questionJSON);
 
 export default {
   name: "page",
@@ -80,20 +75,20 @@ export default {
     Tips,
     XTextarea,
     Picker,
-    Radio
+    Radio,
   },
   data() {
     return {
       toast: {
         show: false,
-        msg: ""
+        msg: "",
       },
       remarkList: [],
       answerList: [],
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
       courseList: [],
-      options: ["满意", "基本满意", "不满意"]
+      options: ["满意", "基本满意", "不满意"],
     };
   },
   computed: {
@@ -104,7 +99,7 @@ export default {
       },
       set(val) {
         this.$store.commit("setSport", val);
-      }
+      },
     },
     url() {
       return window.location.href.split("#")[0];
@@ -115,8 +110,8 @@ export default {
       },
       set(val) {
         this.$store.commit("setTips", val);
-      }
-    }
+      },
+    },
   },
   watch: {
     answerList(val) {
@@ -124,7 +119,7 @@ export default {
     },
     remarkList(val) {
       this.getCompleteStatus();
-    }
+    },
   },
   methods: {
     getCompleteStatus() {
@@ -158,14 +153,14 @@ export default {
         let score = {
           不满意: 1,
           基本满意: 2,
-          满意: 3
+          满意: 3,
         }[scoreText];
         return {
           uid: this.sport.uid,
           course_id,
           club_id: isNotClubQuestion ? -1 : club_id,
           score,
-          remark: this.remarkList[idx] || ""
+          remark: this.remarkList[idx] || "",
         };
       });
       return {
@@ -174,8 +169,8 @@ export default {
           start_time: this.startTime,
           rec_time: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
           uid: this.sport.uid,
-          class_id
-        }
+          class_id,
+        },
       };
     },
     async submit() {
@@ -203,11 +198,11 @@ export default {
       if (this.sport.uid == 0) {
         this.$router.push("/login");
       }
-    }
+    },
   },
   mounted() {
     this.prepareData();
-  }
+  },
 };
 </script>
 <style scoped lang="less">

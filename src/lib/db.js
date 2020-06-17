@@ -38,7 +38,7 @@ export const getXinchengTeacherlist = (grade_name) =>
  */
 export const getXinchengClublist = () =>
   axios({
-    url: '/122/31390164b9.json'
+    url: '/122/31390164b9/14400.json'
   });
 
 /**

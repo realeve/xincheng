@@ -1,18 +1,12 @@
 <template>
   <div class="container">
-    <div
-      class="section"
-      v-for="({uid,username},i) of teacherList"
-      :key="i"
-    >
+    <div class="section" v-for="({ uid, username }, i) of teacherList" :key="i">
       <div class="section-item">
-        <div class="weui-cells__title">
-          {{i+1}}.{{username}}
-        </div>
+        <div class="weui-cells__title">{{ i + 1 }}.{{ username }}</div>
         <group>
           <radio
             title="title"
-            :selected-label-style="{color: '#09BB07'}"
+            :selected-label-style="{ color: '#09BB07' }"
             :options="options"
             v-model="answerList[i]"
           ></radio>
@@ -32,7 +26,8 @@
       type="primary"
       @click.native="submit()"
       class="submit"
-    >提交</x-button>
+      >提交</x-button
+    >
     <toast v-model="toast.show">{{ toast.msg }}</toast>
   </div>
 </template>
@@ -44,20 +39,17 @@ import {
   Checklist,
   XButton,
   Picker,
-  Radio
+  Radio,
 } from "vux";
 
 import { dateFormat } from "vux";
 
 import { mapState } from "vuex";
 
-import questionJSON from "../assets/data/harmoney";
-
 import Tips from "../components/Tips.vue";
 import util from "../lib/common";
 import * as db from "../lib/db";
 const R = require("ramda");
-let questionList = util.getHarmoney(questionJSON);
 
 export default {
   name: "page",
@@ -69,31 +61,31 @@ export default {
     Tips,
     XTextarea,
     Picker,
-    Radio
+    Radio,
   },
   data() {
     return {
       toast: {
         show: false,
-        msg: ""
+        msg: "",
       },
       // remarkList: [],
       answerList: [],
       isCompleted: false,
       startTime: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
       teacherList: [],
-      options: ["非常满意", "比较满意", "基本满意", "不满意"]
+      options: ["非常满意", "比较满意", "基本满意", "不满意"],
     };
   },
   computed: {
-    ...mapState(["userInfo", "cdnUrl"]),
+    ...mapState(["userInfo"]),
     sport: {
       get() {
         return this.$store.state.sport;
       },
       set(val) {
         this.$store.commit("setSport", val);
-      }
+      },
     },
     url() {
       return window.location.href.split("#")[0];
@@ -104,13 +96,13 @@ export default {
       },
       set(val) {
         this.$store.commit("setTips", val);
-      }
-    }
+      },
+    },
   },
   watch: {
     answerList(val) {
       this.getCompleteStatus();
-    }
+    },
     // remarkList(val) {
     //   this.getCompleteStatus();
     // }
@@ -146,13 +138,13 @@ export default {
           不满意: 1,
           基本满意: 2,
           比较满意: 3,
-          非常满意: 4
+          非常满意: 4,
         }[scoreText];
 
         return {
           uid: this.sport.uid,
           course_id,
-          score
+          score,
         };
       });
 
@@ -162,8 +154,8 @@ export default {
           start_time: this.startTime,
           rec_time: dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss"),
           uid: this.sport.uid,
-          class_id: 1
-        }
+          class_id: 1,
+        },
       };
     },
     async submit() {
@@ -186,11 +178,11 @@ export default {
       if (this.sport.uid == 0) {
         this.$router.push("/login");
       }
-    }
+    },
   },
   mounted() {
     this.prepareData();
-  }
+  },
 };
 </script>
 <style scoped lang="less">
