@@ -36,5 +36,11 @@ export default new Router({
         require(["../pages/Login.vue"], resolve);
       },
     },
+    {
+      path: "/score",
+      component: function (resolve) {
+        require(["../pages/score.vue"], resolve);
+      },
+    },
   ],
 });
