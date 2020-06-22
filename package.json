@@ -10,7 +10,7 @@
     "start": "node run dev"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "dayjs": "^1.8.28",
     "echarts": "^3.8.5",
     "fastclick": "^1.0.6",
