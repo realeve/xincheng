@@ -33,7 +33,7 @@ const state = {
     curTimes: 0,
     testMode: false,
   },
-  is_teacher: 1,
+  is_teacher: 0,
   paperInit: false,
   peopleCount: 0,
   isPC: !isMobile(),

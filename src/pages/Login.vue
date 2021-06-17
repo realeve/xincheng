@@ -1,7 +1,13 @@
 <template>
   <div class="wrapper">
     <group class="content">
-      <x-input title="姓名" required name="userName" v-model="sport.userName" placeholder="点击此处输入姓名"></x-input>
+      <x-input
+        title="姓名"
+        required
+        name="userName"
+        v-model="sport.userName"
+        placeholder="点击此处输入姓名"
+      ></x-input>
       <x-input
         title="密码(共8位)"
         required
@@ -39,11 +45,14 @@
           :disabled="!shouldCommit || isEnd"
           type="primary"
           @click.native="submit"
-        >{{ isEnd ? "活动已结束" : "登录" }}</x-button>
+          >{{ isEnd ? "活动已结束" : "登录" }}</x-button
+        >
       </div>
       <div class="note">
         <p class="title">温馨提示：</p>
-        <p style="padding-top: 15px;">每份问卷只能提交一次，且提交后不能修改，请认真填写以免造成评价结果有失公正。</p>
+        <p style="padding-top: 15px">
+          每份问卷只能提交一次，且提交后不能修改，请认真填写以免造成评价结果有失公正。
+        </p>
       </div>
     </group>
     <toast v-model="toast.show">{{ toast.msg }}</toast>
@@ -58,7 +67,7 @@ import {
   Toast,
   PopupPicker,
   GroupTitle,
-  dateFormat
+  dateFormat,
 } from "vux";
 
 import { mapState } from "vuex";
@@ -72,19 +81,19 @@ export default {
     Group,
     Toast,
     GroupTitle,
-    PopupPicker
+    PopupPicker,
   },
   data() {
     return {
       toast: {
         show: false,
-        msg: ""
+        msg: "",
       },
       cascadeList: [],
       cascadeValue: ["一年级", "1"],
       gradeId: 1,
       clubValue: ["", "1"],
-      clubList: []
+      clubList: [],
     };
   },
   computed: {
@@ -97,17 +106,17 @@ export default {
       },
       set(val) {
         this.$store.commit("setSport", val);
-      }
+      },
     },
     isEnd() {
       return (
         dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
-        (this.is_teacher ? "2020-6-24 22:00:00" : "2020-6-21 22:00:00")
+        (this.is_teacher ? "2021-6-24 22:00:00" : "2021-6-24 22:00:00")
       );
     },
     is_teacher() {
       return this.$store.state.is_teacher;
-    }
+    },
   },
   methods: {
     // clubChange(value) {
@@ -146,7 +155,7 @@ export default {
       if (R.isNil(class_id)) {
         return;
       }
-      let clsInfo = R.find(item => item.value == class_id)(storageList);
+      let clsInfo = R.find((item) => item.value == class_id)(storageList);
       return [clsInfo.parent, clsInfo.value];
     },
     async loadClubData() {
@@ -163,16 +172,16 @@ export default {
 
       this.sport = {
         userName: userInfo.username,
-        cardNo: userInfo.psw
+        cardNo: userInfo.psw,
       };
     },
-    submit: async function() {
+    submit: async function () {
       let method = this.is_teacher
         ? "getXinchengUserlistTeacher"
         : "getXinchengUserlist";
       let { data, rows } = await db[method]({
         username: this.sport.userName,
-        id_card: this.sport.cardNo.toUpperCase()
+        id_card: this.sport.cardNo.toUpperCase(),
       });
 
       // 卡号或部门输入错误
@@ -200,7 +209,7 @@ export default {
       let params = {
         username: this.sport.userName,
         psw: this.sport.cardNo,
-        uid
+        uid,
       };
 
       var userInfo = JSON.stringify(params);
@@ -208,12 +217,12 @@ export default {
 
       localStorage.setItem("userInfoVote", userInfo);
       this.jump(this.is_teacher ? "teacher" : "paper");
-    }
+    },
   },
   mounted() {
     document.title = "登录";
     this.init();
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
