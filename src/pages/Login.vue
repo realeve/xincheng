@@ -109,9 +109,10 @@ export default {
       },
     },
     isEnd() {
+      return false;
       return (
         dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss") >
-        (this.is_teacher ? "2021-6-24 22:00:00" : "2021-6-24 22:00:00")
+        (this.is_teacher ? "2021-6-27 22:00:00" : "2021-6-27 22:00:00")
       );
     },
     is_teacher() {

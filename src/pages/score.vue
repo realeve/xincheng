@@ -1,7 +1,12 @@
 <template>
   <div class="home">
     <div class="content">
-      <x-button type="primary" @click.native="down('team')"
+      <x-button @click.native="down('student2021')">学生满意度</x-button>
+
+      <x-button
+        style="margin-top: 30px"
+        type="primary"
+        @click.native="down('team')"
         >团队满意度</x-button
       >
       <x-button @click.native="down('class')">班级满意度</x-button>
@@ -60,6 +65,15 @@ const getXinchengUserlist = () =>
     url: "/329/9db2861490.array",
   });
 
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 学生满意度查询 }
+ */
+const getViewXinchengStudents = () =>
+  axios({
+    url: "/414/583269a1f3.array",
+  });
+
 const now = () => dayjs().format("YYYY-MM-DD HH:mm:ss");
 const ymd = () => dayjs().format("YYYYMMDD");
 const ym = () => dayjs().format("YYYY年MM月");
@@ -98,6 +112,8 @@ export default {
         case "notanswer":
           getXinchengUserlist().then(exportExcel);
           break;
+        case "student2021":
+          getViewXinchengStudents().then(exportExcel);
       }
     },
   },

@@ -17,7 +17,7 @@ import { axios } from "./lib/axios";
 export default {
   name: "app",
   components: {
-    Loading
+    Loading,
     // VConsole
   },
   data() {
@@ -25,7 +25,7 @@ export default {
       code: "",
       apiId: "wx762c9153df774440",
       title: "",
-      shouldShare: false
+      shouldShare: false,
     };
   },
   computed: {
@@ -36,7 +36,7 @@ export default {
       },
       set(val) {
         this.$store.commit("updateLoadingStatus", val);
-      }
+      },
     },
     // 签名用URL
     url() {
@@ -57,24 +57,24 @@ export default {
     shouldInitShare() {
       // && this.sport.curScore >= this.sport.minPrizeScore
       return this.sport.isLogin && this.shouldShare;
-    }
+    },
   },
   watch: {
     shouldInitShare(val) {
       if (!val) {
         return;
       }
-      this.title = `龙小新城2019-2020学年度教师满意度测评问卷`;
+      this.title = `龙小新城2020-2021学年度教师满意度测评问卷`;
       this.initWxShare();
-    }
+    },
   },
   methods: {
     wxPermissionInit() {
       return axios({
         params: {
           s: "/weixin/signature",
-          url: this.url
-        }
+          url: this.url,
+        },
       });
     },
     wxReady(obj) {
@@ -87,8 +87,8 @@ export default {
         jsApiList: [
           "onMenuShareAppMessage",
           "onMenuShareTimeline",
-          "hideMenuItems"
-        ]
+          "hideMenuItems",
+        ],
       };
       this.$wechat.config(config);
     },
@@ -96,13 +96,13 @@ export default {
       this.$wechat.ready(() => {
         let option = {
           title: "教师满意度测评问卷", // 分享标题
-          desc: "龙小新城2019-2020学年度教师满意度测评问卷",
+          desc: "龙小新城2020-2021学年度教师满意度测评问卷",
           link: this.shareUrl,
           imgUrl: "http://www.cbpc.ltd/public/topic/201901/static/logo.jpg",
           type: "",
           dataUrl: "",
-          success: function() {},
-          cancel: function() {}
+          success: function () {},
+          cancel: function () {},
         };
         this.$wechat.onMenuShareAppMessage(option);
         this.$wechat.onMenuShareTimeline(option);
@@ -120,18 +120,18 @@ export default {
             "menuItem:readMode",
             "menuItem:openWithQQBrowser",
             "menuItem:openWithSafari",
-            "menuItem:share:email"
-          ]
+            "menuItem:share:email",
+          ],
         });
       });
     },
     wxInit() {
-      this.wxPermissionInit().then(data => {
+      this.wxPermissionInit().then((data) => {
         this.shouldShare = true;
         this.wxReady(data);
         this.initWxShare();
       });
-    }
+    },
   },
   created() {
     this.title = this.sport.name;
@@ -139,7 +139,7 @@ export default {
     // if (window.location.href.indexOf("20190112")) {
     //   this.$store.commit("setTeacherMode", 1);
     // }
-  }
+  },
 };
 </script>
 
